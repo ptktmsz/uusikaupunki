@@ -19,9 +19,4 @@ class DigitrafficClient:
             return None
 
     def get_train_trip(self, date: str, train: str) -> dict:
-        return self._make_request(f"trains/{date}/{train}").json()
-
-
-client = DigitrafficClient()
-res = client.get_train_trip("2025-03-17", "27")
-print(res)
+        return self._make_request(f"trains/{date}/{train}").json()[0]
