@@ -4,6 +4,8 @@ certifi==2025.1.31
     # via requests
 charset-normalizer==3.4.1
     # via requests
+duckdb==1.2.1
+    # via uusikaupunki (pyproject.toml)
 idna==3.10
     # via requests
 numpy==2.2.4
