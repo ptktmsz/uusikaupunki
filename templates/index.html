@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Uusikaupunki - predict your Finnish train!</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+            text-align: center;
+        }
+        select {
+            margin: 10px;
+            padding: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Uusikaupunki</h1>
+    <p>Select a station and a train to view arrival times from the last 30 days.</p>
+
+    <form method="GET" action="#">
+        <label for="station">Choose a station:</label>
+        <select id="station" name="station">
+            {% for station in stations %}
+                <option value="{{ station }}">{{ station }}</option>
+            {% endfor %}
+        </select>
+
+        <label for="train">Choose a train:</label>
+        <select id="train" name="train">
+            {% for train in trains %}
+                <option value="{{ train }}">{{ train }}</option>
+            {% endfor %}
+        </select>
+
+        <button type="submit">Submit</button>
+    </form>
+</body>
+</html>

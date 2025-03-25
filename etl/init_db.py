@@ -16,6 +16,14 @@ with duckdb.connect("uusikaupunki.duckdb") as con:
             station_id INTEGER,
             departure_time TIMESTAMP,
             arrival_time TIMESTAMP,
-            last_updated TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            last_updated TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            FOREIGN KEY (station_id) REFERENCES stations (station_id)
+        )
+    """)
+
+    con.execute("""
+        CREATE TABLE stations (
+        id BIGINT PRIMARY KEY,
+        name TEXT NOT NULL,
         )
     """)
