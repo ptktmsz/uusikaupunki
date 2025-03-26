@@ -17,5 +17,7 @@ def find_station_id(station: str) -> int:
         res = con.execute(f"""SELECT id FROM stations WHERE name = '{station}'""")
         return res.fetchone()[0]
 
-def plot_accumulated_arrivals(df: pl.DataFrame):
-    ...
+def get_average_time(df: pl.DataFrame):
+    times = df["arrival_time"].dt.time()
+    datetimes = pl.Series(datetime.combine(datetime.today().date(), t) for t in times)
+    return datetimes.mean().time()
