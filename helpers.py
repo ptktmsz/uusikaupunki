@@ -5,7 +5,7 @@ def get_trains() -> list:
         res = con.execute("""SELECT DISTINCT train_id FROM train_arrivals ORDER BY train_id""")
         return [i[0] for i in res.fetchall()]
 
-def get_stations(train: int) -> list:
+def get_stations() -> list:
     with duckdb.connect("etl/uusikaupunki.duckdb") as con:
-        res = con.execute(f"""SELECT DISTINCT station_id FROM train_arrivals WHERE train_id = {train} ORDER BY train_id""")
+        res = con.execute(f"""SELECT DISTINCT name FROM stations ORDER BY name""")
         return [i[0] for i in res.fetchall()]

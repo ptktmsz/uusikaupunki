@@ -20,3 +20,6 @@ class DigitrafficClient:
 
     def get_train_trip(self, date: str, train: str) -> dict:
         return self._make_request(f"trains/{date}/{train}").json()[0]
+
+    def get_stations(self) -> list:
+        return self._make_request(f"metadata/stations").json()
