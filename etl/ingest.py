@@ -12,7 +12,7 @@ def ingest_timetable(date: str, train: str) -> None:
     df = df.select(["stationUICCode", "type", "actualTime"])
     df = df.with_columns(pl.col("actualTime").str.to_datetime())
     df = df.pivot("type", index="stationUICCode", values="actualTime")
-    with duckdb.connect("uusikaupunki.duckdb") as con:
+    with duckdb.connect("db/uusikaupunki.duckdb") as con:
         con.execute(
             f"""
             INSERT INTO train_arrivals (id, train_id, station_id, departure_time, arrival_time)

@@ -1,13 +1,13 @@
 from flask import Flask, redirect, render_template, request, url_for
-from helpers import get_stations, get_trains
+from helpers import db_get_stations, db_get_trains
 
 app = Flask(__name__)
 
 
 @app.route("/")
 def index():
-    trains = get_trains()
-    stations = get_stations()
+    trains = db_get_trains()
+    stations = db_get_stations()
     return render_template("index.html", stations=stations, trains=trains)
 
 

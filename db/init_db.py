@@ -1,9 +1,14 @@
-from client import DigitrafficClient
+from etl.client import DigitrafficClient
 import duckdb
+import os
 import polars as pl
 
-with duckdb.connect("uusikaupunki.duckdb") as con:
+db_path = "db/uusikaupunki.duckdb"
 
+if os.path.exists(db_path):
+    os.remove(db_path)
+
+with duckdb.connect(db_path) as con:
     client = DigitrafficClient()
     stations = client.get_stations()
 
@@ -17,10 +22,6 @@ with duckdb.connect("uusikaupunki.duckdb") as con:
     ])
 
     con.execute("""
-        DROP TABLE IF EXISTS stations;
-        """)
-
-    con.execute("""
         CREATE TABLE stations (
         id INTEGER PRIMARY KEY,
         name TEXT NOT NULL
@@ -32,11 +33,7 @@ with duckdb.connect("uusikaupunki.duckdb") as con:
         """)
 
     con.execute("""
-        CREATE OR REPLACE SEQUENCE train_arrival_id_seq START 1;
-        """)
-
-    con.execute("""
-        DROP TABLE IF EXISTS train_arrivals;
+        CREATE SEQUENCE train_arrival_id_seq START 1;
         """)
 
     con.execute("""
