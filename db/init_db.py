@@ -1,7 +1,9 @@
-from etl.client import DigitrafficClient
-import duckdb
 import os
+
+import duckdb
 import polars as pl
+
+from etl.client import DigitrafficClient
 
 DB_PATH = "db/uusikaupunki.duckdb"
 
@@ -13,6 +15,7 @@ def reset_database(path: str) -> None:
     """
     if os.path.exists(path):
         os.remove(path)
+        print("Database removed.")
 
 
 def create_and_populate_stations_table(con: duckdb.DuckDBPyConnection) -> None:
@@ -61,12 +64,9 @@ def create_train_arrivals_table(con: duckdb.DuckDBPyConnection) -> None:
         """)
 
 
-def main() -> None:
-    reset_database(DB_PATH)
-    with duckdb.connect(DB_PATH) as con:
-        create_and_populate_stations_table(con)
-        create_train_arrivals_table(con)
-
-
 if __name__ == "__main__":
-    main()
+    reset_database(DB_PATH)
+    with duckdb.connect(DB_PATH) as connnection:
+        create_and_populate_stations_table(connnection)
+        create_train_arrivals_table(connnection)
+        print("Database recreated.")
