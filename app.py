@@ -1,5 +1,7 @@
+from datetime import datetime, timedelta
+import duckdb
 from flask import Flask, redirect, render_template, request, url_for
-from helpers import db_get_stations, db_get_trains
+from helpers import db_get_stations, db_get_trains, find_station_id, plot_accumulated_arrivals
 
 app = Flask(__name__)
 
@@ -21,13 +23,21 @@ def index():
 def stats():
     train = request.args.get("train")
     station = request.args.get("station")
+    station_id = find_station_id(station)
+    start_date = (datetime.now() - timedelta(days=30)).strftime("%Y-%m-%d %H:%M:%S")
+    with duckdb.connect("db/uusikaupunki.duckdb") as con:
+        arrivals_df = con.execute(f"""
+            SELECT arrival_time FROM train_arrivals
+            WHERE train_id = {train} AND station_id = {station_id} AND arrival_time >= '{start_date}'
+        """).pl()
+
+    chart = plot_accumulated_arrivals(arrivals_df)
 
     # Placeholder for stats calculation
     statistics = {
-        "average_delay": "5 min",
-        "on_time_percentage": "87%",
-        "total_arrivals": 120
+        "station": station_id
     }
+
 
     return render_template("stats.html", train=train, station=station, statistics=statistics)
 
