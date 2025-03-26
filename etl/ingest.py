@@ -8,8 +8,7 @@ def ingest_timetable(date: str, train: str) -> None:
     client = DigitrafficClient()
     train_trip = client.get_train_trip(date, train)
     timetable = train_trip["timeTableRows"]
-    df = pl.from_dicts(timetable)
-    df = df.select(["stationUICCode", "type", "actualTime"])
+    df = pl.from_dicts(timetable, schema=["stationUICCode", "type", "actualTime"])
     df = df.with_columns(pl.col("actualTime").str.to_datetime())
     df = df.pivot("type", index="stationUICCode", values="actualTime")
     with duckdb.connect("db/uusikaupunki.duckdb") as con:

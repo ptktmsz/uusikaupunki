@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Uusikaupunki</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+            text-align: center;
+    </style>
+</head>
+<body>
+    <h1>Statistics for {{ train }} at {{ station }}</h1>
+    <p>Average Delay: {{ statistics.average_delay }}</p>
+    <p>On-Time Percentage: {{ statistics.on_time_percentage }}</p>
+    <p>Total Arrivals: {{ statistics.total_arrivals }}</p>
+    <a href="{{ url_for('index') }}">Back</a>
+</body>
+</html>
