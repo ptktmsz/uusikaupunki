@@ -6,13 +6,13 @@ DB_PATH = "db/uusikaupunki.duckdb"
 
 def db_get_trains() -> list:
     """Returns list of distinct train IDs in the database of train arrivals."""
-    with duckdb.connect("db/uusikaupunki.duckdb") as con:
+    with duckdb.connect(DB_PATH) as con:
         res = con.execute("SELECT DISTINCT train_id FROM train_arrivals ORDER BY train_id")
         return [i[0] for i in res.fetchall()]
 
 def db_get_stations() -> list:
     """Returns list of distinct station names in the database of train arrivals."""
-    with duckdb.connect("db/uusikaupunki.duckdb") as con:
+    with duckdb.connect(DB_PATH) as con:
         res = con.execute("SELECT DISTINCT name FROM stations ORDER BY name")
         return [i[0] for i in res.fetchall()]
 
@@ -22,7 +22,7 @@ def find_station_id(station: str) -> int | None:
     :param station: station name as astring
     :return: station ID as an integer.
     """
-    with duckdb.connect("db/uusikaupunki.duckdb") as con:
+    with duckdb.connect(DB_PATH) as con:
         res = con.execute("SELECT id FROM stations WHERE name = ?", [station]).fetchone()
         return res[0] if res else None
 

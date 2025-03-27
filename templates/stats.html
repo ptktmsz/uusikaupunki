@@ -12,9 +12,13 @@
     </style>
 </head>
 <body>
+    {% if error %}
+    <p style="color: red;">{{ error }}</p>
+    {% else %}
     <p>Based on the data from the last 30 days, the average arrival time for train number {{ train }} at station {{ station }} is</p>
     <h1>{{ avg_time }} UTC</h1>
     <p>Make sure to plan accordingly!</p>
+    {% endif %}
     <a href="{{ url_for('index') }}">Back</a>
 </body>
 </html>
