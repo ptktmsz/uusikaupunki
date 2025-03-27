@@ -1,6 +1,6 @@
 import duckdb
 import polars as pl
-from datetime import datetime
+from datetime import datetime, time
 
 DB_PATH = "db/uusikaupunki.duckdb"
 
@@ -26,13 +26,15 @@ def find_station_id(station: str) -> int | None:
         res = con.execute("SELECT id FROM stations WHERE name = ?", [station]).fetchone()
         return res[0] if res else None
 
-def get_average_time(df: pl.DataFrame, timecol: str) -> datetime.time:
+def get_average_time(df: pl.DataFrame, timecol: str) -> time | None:
     """
     Gets the average time from a given dataframe disregarding the date.
     :param df: polars dataframe to be processed.
     :param timecol: name of the timestamp column with datetime data.
     :return: average time object as a datetime.time.
     """
+    if df.is_empty():
+        return None
     times = df[timecol].dt.time()
     # Time objects cannot be calculated easily, so adding current date to create a datetime object.
     datetimes = pl.Series(datetime.combine(datetime.today().date(), t) for t in times)
