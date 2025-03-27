@@ -9,7 +9,11 @@ from client import DigitrafficClient
 DB_PATH = "db/uusikaupunki.duckdb"
 
 def ingest_timetable(date: str, train: str) -> None:
-    """Fetch train timetable for a given date and insert it into the database."""
+    """
+    Fetch train timetable for a given date and insert it into the database.
+    :param date: date in YYYY-MM-DD format.
+    :param train: ID of the train.
+    """
     client = DigitrafficClient()
     try:
         train_trip = client.get_train_trip(date, train)
@@ -33,7 +37,8 @@ def ingest_timetable(date: str, train: str) -> None:
     except Exception as e:
         print(f"Failed to ingest timetable for train {train} on {date}: {e}")
 
-if __name__ == '__main__':
+def main():
+    """CLI tool for ingesting data about train arrivals into the database."""
     yesterday = datetime.today() - timedelta(days=1)
 
     parser = argparse.ArgumentParser()
@@ -52,3 +57,6 @@ if __name__ == '__main__':
             processed_date += timedelta(days=1)
     else:
         ingest_timetable(args.date, args.train)
+
+if __name__ == '__main__':
+    main()
