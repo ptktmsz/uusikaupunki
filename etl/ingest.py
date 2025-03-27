@@ -28,10 +28,10 @@ def ingest_timetable(date: str, train: str) -> None:
 
         with duckdb.connect("db/uusikaupunki.duckdb") as con:
             con.execute(
-                f"""
-                INSERT INTO train_arrivals (id, train_id, station_id, departure_time, arrival_time)
-                SELECT nextval('train_arrival_id_seq'), {train}, stationUICCode, DEPARTURE, ARRIVAL FROM df
                 """
+                INSERT INTO train_arrivals (id, train_id, station_id, departure_time, arrival_time)
+                SELECT nextval('train_arrival_id_seq'), ?, stationUICCode, DEPARTURE, ARRIVAL FROM df
+                """, [train]
             )
 
     except Exception as e:

@@ -1,6 +1,6 @@
 import duckdb
 import polars as pl
-from datetime import datetime, timedelta
+from datetime import datetime
 
 def db_get_trains() -> list:
     with duckdb.connect("db/uusikaupunki.duckdb") as con:
