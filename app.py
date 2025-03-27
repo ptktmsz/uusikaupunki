@@ -31,7 +31,7 @@ def stats():
             WHERE train_id = {train} AND station_id = {station_id} AND arrival_time >= '{start_date}'
         """).pl()
 
-    avg_time = get_average_time(arrivals_df)
+    avg_time = get_average_time(df=arrivals_df, timecol="arrival_time")
 
     return render_template("stats.html", train=train, station=station, avg_time=avg_time)
 
